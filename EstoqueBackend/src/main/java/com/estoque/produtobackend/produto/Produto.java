@@ -1,16 +1,16 @@
 package com.estoque.produtobackend.produto;
 
+import com.estoque.produtobackend.estoque.Estoque;
+import com.estoque.produtobackend.estoque.EstoqueForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,15 +20,19 @@ public class Produto {
 
     @Id
     @GeneratedValue(strategy  = GenerationType.IDENTITY)
-    private int idproduto;
+    private long  idproduto;
     private String nomeProduto;
     private Double precoVenda;
     private Double precoDeCompra;
 
-    public static Produto from (ProdutoForm produtoFrom){
-        ModelMapper modelMapper = new ModelMapper();
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    private List<Estoque> estoques = new ArrayList<>();
+
+    public static Produto from(ProdutoForm form){
+        ModelMapper modelMapper =new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper.map(produtoFrom, Produto.class);
+        return modelMapper.map(form, Produto.class);
     }
+
 
 }
