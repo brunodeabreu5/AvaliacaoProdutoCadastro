@@ -12,7 +12,6 @@
 
 .fundoEstoque {
   background-color: rgb(230, 226, 221);
-  width: 70%;
   height: 70%;
   display: flex;
   justify-content: center;
@@ -41,4 +40,51 @@ h2{
 input{
   width: 60%;
 
+}
+
+.produtosList{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  border-bottom: 1px solid black;
+
+}
+
+.nomePro{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 120px;
+}
+.nomeid{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.barraDeNome{
+  display: flex;
+  
+}
+
+.precoVenda{
+  padding: 10px;
+  width: 120px;
+  
+}
+
+.precoCompra{
+  padding: 10px;
+}
+ main{
+   display: flex;
+   width: 100%;
+   height: 100%;
+ }
+.nome{
+  font-size: arial;
+  font-weight: bold;
+  display: flex;
+  padding: 10px;
+  border-style: groove;
+  
 }
