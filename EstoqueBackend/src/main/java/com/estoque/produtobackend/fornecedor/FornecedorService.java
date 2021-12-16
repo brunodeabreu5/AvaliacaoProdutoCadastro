@@ -19,39 +19,39 @@ public class FornecedorService {
 
     Logger logger = LoggerFactory.getLogger(FornecedorService.class);
 
-    public List<Fo> findAll() {
-        List<Produto> produtos = repositories.findAll();
-        return produtos.stream().map(ProdutoDto::from).collect(toList());
+    public List<FornecedorDto> findAll() {
+        List<Fornecedor> fornecedors = repositories.findAll();
+        return fornecedors.stream().map(FornecedorDto::from).collect(toList());
     }
 
-    public ProdutoDto create(ProdutoForm produtoForm) {
-        Produto produto= Produto.from(produtoForm);
-        return ProdutoDto.from(repositories.save(produto));
+    public FornecedorDto create(FornecedorForm fornecedorForm) {
+        Fornecedor fornecedor= Fornecedor.from(fornecedorForm);
+        return FornecedorDto.from(repositories.save(fornecedor));
     }
 
-    public ProdutoDto findById(Long id) {
-        return ProdutoDto.from(repositories.findById(id).orElseThrow(() -> {
+    public FornecedorDto findById(Long id) {
+        return FornecedorDto.from(repositories.findById(id).orElseThrow(() -> {
             logger.error("id não existe", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }));
     }
 
-    public ProdutoDto update(Long id, ProdutoForm produtoForm) {
+    public FornecedorDto update(Long id, FornecedorForm fornecedorForm) {
         ModelMapper modelMapper = new ModelMapper();
-        Produto produto = repositories.findById(id).orElseThrow(() -> {
+        Fornecedor fornecedor = repositories.findById(id).orElseThrow(() -> {
             logger.error("Id not{}", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
-        modelMapper.map(produtoForm, produto);
-        return ProdutoDto.from(repositories.save(produto));
+        modelMapper.map(fornecedorForm, fornecedor);
+        return FornecedorDto.from(repositories.save(fornecedor));
     }
 
     public void delete(Long id) {
-        Produto produto = repositories.findById(id).orElseThrow(() -> {
+        Fornecedor fornecedor = repositories.findById(id).orElseThrow(() -> {
             logger.error("id não existe", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
 
-        repositories.delete(produto);
+        repositories.delete(fornecedor);
     }
 }
