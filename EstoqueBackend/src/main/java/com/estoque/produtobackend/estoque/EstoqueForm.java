@@ -1,6 +1,9 @@
 package com.estoque.produtobackend.estoque;
 
-import lombok.*;
+import com.estoque.produtobackend.produto.ProdutoForm;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -8,5 +11,6 @@ import lombok.*;
 public class EstoqueForm {
 
     private int estoque;
+    private ProdutoForm produto;
 
 }

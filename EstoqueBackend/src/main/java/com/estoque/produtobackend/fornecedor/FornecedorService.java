@@ -1,5 +1,6 @@
-package com.estoque.produtobackend.produto;
+package com.estoque.produtobackend.fornecedor;
 
+import com.estoque.produtobackend.produto.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +13,13 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 @Service
-public class ProdutoService {
+public class FornecedorService {
     @Autowired
-    private ProdutoRepositories repositories;
+    private FornecedorRepositories repositories;
 
-    Logger logger = LoggerFactory.getLogger(ProdutoService.class);
+    Logger logger = LoggerFactory.getLogger(FornecedorService.class);
 
-    public List<ProdutoDto> findAll() {
+    public List<Fo> findAll() {
         List<Produto> produtos = repositories.findAll();
         return produtos.stream().map(ProdutoDto::from).collect(toList());
     }

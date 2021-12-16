@@ -1,21 +1,15 @@
 package com.estoque.produtobackend.produto;
 
-import com.estoque.produtobackend.estoque.Estoque;
-import com.estoque.produtobackend.estoque.EstoqueRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -37,7 +31,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/{idProduto}")
-    public ResponseEntity<ProdutoDto> findById(@PathVariable long idProduto) {
+    public ResponseEntity<ProdutoDto> findById(@PathVariable Long idProduto) {
         return ResponseEntity.ok(service.findById(idProduto));
     }
 
@@ -61,12 +55,12 @@ public class ProdutoController {
     }*/
 
     @PutMapping("/{idProduto}")
-    public ResponseEntity<ProdutoDto> update(@PathVariable long idProduto, @RequestBody @Valid ProdutoForm produtoForm) {
+    public ResponseEntity<ProdutoDto> update(@PathVariable Long idProduto, @RequestBody @Valid ProdutoForm produtoForm) {
         return ResponseEntity.ok(service.update(idProduto, produtoForm));
     }
 
     @DeleteMapping("/{idProduto}")
-    public ResponseEntity<?> delete(@PathVariable long idProduto) {
+    public ResponseEntity<?> delete(@PathVariable Long idProduto) {
         service.delete(idProduto);
         return ResponseEntity.ok().build();
     }

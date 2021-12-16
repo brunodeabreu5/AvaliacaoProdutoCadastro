@@ -32,14 +32,14 @@ public class EstoqueService {
         return EstoqueDto.from(repositories.save(estoque));
     }
 
-    public EstoqueDto findById(long id) {
+    public EstoqueDto findById(Long id) {
         return EstoqueDto.from(repositories.findById(id).orElseThrow(() -> {
             logger.error("id não existe", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }));
     }
 
-    public EstoqueDto update(long id, EstoqueForm estoqueForm) {
+    public EstoqueDto update(Long id, EstoqueForm estoqueForm) {
         ModelMapper modelMapper = new ModelMapper();
         Estoque estoque = repositories.findById(id).orElseThrow(() -> {
             logger.error("Id not{}", id);
@@ -49,7 +49,7 @@ public class EstoqueService {
         return EstoqueDto.from(repositories.save(estoque));
     }
 
-    public void delete(long id) {
+    public void delete(Long id) {
         Estoque estoque = repositories.findById(id).orElseThrow(() -> {
             logger.error("id não existe", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

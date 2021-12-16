@@ -11,7 +11,7 @@ import org.modelmapper.convention.MatchingStrategies;
 @AllArgsConstructor
 public class ProdutoDto {
 
-    private int idproduto;
+    private Long idproduto;
     private String nomeProduto;
     private Double precoVenda;
     private Double precoDeCompra;

@@ -22,7 +22,7 @@ public class EstoqueController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EstoqueDto> findById(@PathVariable long id) {
+    public ResponseEntity<EstoqueDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -32,12 +32,12 @@ public class EstoqueController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EstoqueDto> update(@PathVariable long id, @RequestBody @Valid EstoqueForm estoqueForm) {
+    public ResponseEntity<EstoqueDto> update(@PathVariable Long id, @RequestBody @Valid EstoqueForm estoqueForm) {
         return ResponseEntity.ok(service.update(id, estoqueForm));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.ok().build();
     }
