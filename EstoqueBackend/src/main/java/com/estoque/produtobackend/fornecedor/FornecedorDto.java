@@ -1,12 +1,14 @@
 package com.estoque.produtobackend.fornecedor;
 
-import com.estoque.produtobackend.estoque.Estoque;
-import com.estoque.produtobackend.estoque.EstoqueDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FornecedorDto {
     private Long idFornecedor ;
     private String NomeDoFornecedor;

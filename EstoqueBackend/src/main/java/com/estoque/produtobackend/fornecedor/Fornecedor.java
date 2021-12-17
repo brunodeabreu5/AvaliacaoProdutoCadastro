@@ -1,8 +1,8 @@
 package com.estoque.produtobackend.fornecedor;
 
-import com.estoque.produtobackend.estoque.Estoque;
-import com.estoque.produtobackend.estoque.EstoqueForm;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
@@ -11,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @Data
+@Entity
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Fornecedor {
 
     @Id

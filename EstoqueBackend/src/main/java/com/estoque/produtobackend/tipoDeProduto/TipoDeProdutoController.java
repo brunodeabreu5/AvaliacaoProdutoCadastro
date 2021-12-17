@@ -15,13 +15,7 @@ public class TipoDeProdutoController {
 
     @Autowired
     private TipoDeProdutoService service;
-   /* @Autowired
-    private final EntityManager manager;
 
-    public ProdutoController(EntityManager manager) {
-        this.manager = manager;
-    }
-*/
     @GetMapping
     public ResponseEntity<List<TipoDeProdutoDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
@@ -34,7 +28,7 @@ public class TipoDeProdutoController {
 
     @PostMapping
     @Column(unique = true)
-    public ResponseEntity<TipoDeProdutoDto> create(@RequestBody @Valid TipoDeProdutoForm tipoDeProdutoForm) {
+    public ResponseEntity<TipoDeProdutoDto> create(@RequestBody TipoDeProdutoForm tipoDeProdutoForm) {
         return ResponseEntity.ok(service.create(tipoDeProdutoForm));
     }
 

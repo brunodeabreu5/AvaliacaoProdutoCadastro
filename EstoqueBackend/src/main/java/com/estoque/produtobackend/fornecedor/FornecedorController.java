@@ -28,7 +28,7 @@ public class FornecedorController {
 
     @PostMapping
     @Column(unique = true)
-    public ResponseEntity<FornecedorDto> create(@RequestBody @Valid FornecedorForm fornecedorForm) {
+    public ResponseEntity<FornecedorDto> create(@RequestBody FornecedorForm fornecedorForm) {
         return ResponseEntity.ok(service.create(fornecedorForm));
     }
 
