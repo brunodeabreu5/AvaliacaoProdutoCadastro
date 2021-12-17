@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 
 import Modal from 'react-modal'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import api from '../../api/api'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import Button from '@mui/material/Button'
 
 import './home.css'
 
@@ -23,6 +31,8 @@ export default function Home() {
   const history = useNavigate()
   const [modalIsOpen, setIsOpen] = useState(false)
 
+  const [modalIsOpenFor, setIsFor] = useState(false)
+
   React.useEffect(() => {
     api
       .get('produto')
@@ -34,11 +44,31 @@ export default function Home() {
       })
   }, [])
 
+  const[data1,setData1] =useState({
+    nomeDoFornecedor:''
+  })
+
   const [data, setData] = useState({
     nomeProduto: '',
+    quantidade: '',
     precoVenda: '',
-    precoDeCompra: ''
+    precoDeCompra: '',
+    fornecedor: '',
+    tipoDeProduto: '',
+    
   })
+
+  function submitFor(e) {
+    e.preventDefault()
+    api
+      .post('/fornecedor', {
+        nomeDoFornecedor:data1.nomeDoFornecedor
+      })
+      .then(response => {
+        console.log(response.data1)
+        history('/')
+      })
+  }
 
   function submit(e) {
     e.preventDefault()
@@ -46,12 +76,20 @@ export default function Home() {
       .post('/produto', {
         nomeProduto: data.nomeProduto,
         precoVenda: data.precoVenda,
-        precoDeCompra: data.precoDeCompra
+        precoDeCompra: data.precoDeCompra,
+        quantidade:data.quantidade
       })
       .then(response => {
         console.log(response.data)
         history('/')
       })
+  }
+
+  function handlefor(r) {
+    const newdata1 = { ...data1 }
+    newdata1[r.target.id] = r.target.value
+    setData1(newdata1)
+    console.log(newdata1)
   }
 
   function handle(e) {
@@ -66,13 +104,41 @@ export default function Home() {
   }
   function closeModal() {
     setIsOpen(false)
-    
+  }
+  function closeModalFor() {
+    setIsFor(false)
+  }
+
+  function openModalFor() {
+    setIsFor(true)
   }
 
   return (
     <div className="fundo">
       <h1>Sitema de estoque</h1>
-      <button onClick={openModal}>Cadastra</button>
+      <button onClick={openModal}>Cadastra Produto</button>
+      <button onClick={openModalFor}>Cadastra Fornecedor</button>
+      <Modal
+        isOpen={modalIsOpenFor}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+        style={customStyles}
+      >
+        <form onSubmit={r => submitFor(r)}>
+          <div className="modal">
+            Nome Fornecedor:
+            <input
+              onChange={r => handlefor(r)}
+              value={data1.nomeDoFornecedor}
+              type="text"
+              id="nomeDoFornecedor"
+            />
+          </div>
+        </form>
+        <button onClick={closeModalFor}>close</button>
+        <button type="submitFor">Salvar</button>
+      </Modal>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -87,7 +153,8 @@ export default function Home() {
               <input
                 onChange={e => handle(e)}
                 value={data.nomeProduto}
-                type="text"
+                data-testid ="nomeproduto"
+                type="nomeProduto"
                 id="nomeProduto"
               />
               Preço Venda:
@@ -106,6 +173,27 @@ export default function Home() {
                 type="text"
                 id="precoDeCompra"
               />
+              Quatidade:
+              <input
+                onChange={e => handle(e)}
+                value={data.quantidade}
+                type="text"
+                id="nomeProduto"
+              />
+              Fornecedor:
+              <input
+                onChange={e => handle(e)}
+                value={data.fornecedor}
+                type="text"
+                id="nomeProduto"
+              />
+              Tipo De Produto
+              <input
+                onChange={e => handle(e)}
+                value={data.tipoDeProduto}
+                type="text"
+                id="nomeProduto"
+              />
             </div>
             <div className="buttonModal">
               <button type="submit">Salvar</button>
@@ -114,43 +202,53 @@ export default function Home() {
           </form>
         </div>
       </Modal>
-
       <div className="fundoEstoque">
-        <main>
-          <div>
-            <di className="barraDeNome">
-              <p className="nome">Id</p>
-              <p className="nome">Nome Produto</p>
-              <p className="nome">Nome Produto</p>
-              <p className="nome">Nome Produto</p>
-              <p className="nome">Estoque</p>
-            </di>
-
-            {produtos.map((produto, key) => {
-              return (
-                <div key={key}>
-                  <div className="produtosList">
-                  <div className="nomeid">
-                      <p>{produto.idproduto}</p>
-                    </div>
-                    <div className="nomePro">
-                      <p>{produto.nomeProduto}</p>
-                    </div>
-                    <di className="precoVenda">
-                      <p>R$  {produto.precoVenda}</p>
-                    </di>
-                    <div className="precoCompra">
-                      {' '}
-                      <p>R$  {produto.precoDeCompra}</p>
-                      <button>Editar</button>
-                      <button>Adicina Estoque</button>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </main>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="right">id</TableCell>
+                <TableCell>Produto</TableCell>
+                <TableCell align="right">quantidade</TableCell>
+                <TableCell align="right">Preço de Venda</TableCell>
+                <TableCell align="right">Preço de Compra</TableCell>
+                <TableCell align="right">Tipo de Produto</TableCell>
+                <TableCell align="right">Fornecedor</TableCell>
+                <TableCell align="right">Editar</TableCell>
+                <TableCell align="right">Excluir</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {produtos.map((produto, key) => (
+                <TableRow
+                  key={key}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {produto.idproduto}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {produto.nomeProduto}
+                  </TableCell>
+                  <TableCell align="right">{produto.quantidade}</TableCell>
+                  <TableCell align="right">{produto.precoVenda}</TableCell>
+                  <TableCell align="right">{produto.precoDeCompra}</TableCell>
+                  <TableCell align="right">
+                    {produto.tipoDeProduto.tipoDeProduto}
+                  </TableCell>
+                  <TableCell align="right">
+                    {produto.fornecedor.nomeDoFornecedor}
+                  </TableCell>
+                  <TableCell align="right">
+                    <Link to={{ pathname: `/editar/${produto.id}` }}>
+                      <Button variant="contained">Editar</Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   )

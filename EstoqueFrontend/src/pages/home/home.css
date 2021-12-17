@@ -45,7 +45,7 @@ input{
 .produtosList{
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  
   border-bottom: 1px solid black;
 
 }
