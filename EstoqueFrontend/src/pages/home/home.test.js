@@ -11,6 +11,6 @@ const MockHome = () => {
 }
 test('render Produto', async () => {
   render(<MockHome/>)
-  const nameElement = await screen.findAllByText(/nomeproduto/i)
+  const nameElement = await screen.findByTestId(/nomeproduto/i)
     expect(nameElement).toBeInTheDocument()
 })

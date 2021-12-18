@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import Modal from 'react-modal'
 import { useNavigate, Link } from 'react-router-dom'
 
+import ModalForm from '../../components/modal/ModalFor'
+
 import api from '../../api/api'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -27,11 +29,15 @@ const customStyles = {
 }
 
 export default function Home() {
-  const [produtos, setPosts] = useState([])
-  const history = useNavigate()
-  const [modalIsOpen, setIsOpen] = useState(false)
 
-  const [modalIsOpenFor, setIsFor] = useState(false)
+  const [produtos, setPosts] = useState([])
+
+  const history = useNavigate()
+
+  const [modalIsOpen, setIsOpen,setIsFor] = useState(false)
+
+ 
+
 
   React.useEffect(() => {
     api
@@ -44,9 +50,7 @@ export default function Home() {
       })
   }, [])
 
-  const[data1,setData1] =useState({
-    nomeDoFornecedor:''
-  })
+  
 
   const [data, setData] = useState({
     nomeProduto: '',
@@ -58,17 +62,7 @@ export default function Home() {
     
   })
 
-  function submitFor(e) {
-    e.preventDefault()
-    api
-      .post('/fornecedor', {
-        nomeDoFornecedor:data1.nomeDoFornecedor
-      })
-      .then(response => {
-        console.log(response.data1)
-        history('/')
-      })
-  }
+  
 
   function submit(e) {
     e.preventDefault()
@@ -85,12 +79,6 @@ export default function Home() {
       })
   }
 
-  function handlefor(r) {
-    const newdata1 = { ...data1 }
-    newdata1[r.target.id] = r.target.value
-    setData1(newdata1)
-    console.log(newdata1)
-  }
 
   function handle(e) {
     const newdata = { ...data }
@@ -105,39 +93,29 @@ export default function Home() {
   function closeModal() {
     setIsOpen(false)
   }
-  function closeModalFor() {
-    setIsFor(false)
-  }
 
   function openModalFor() {
     setIsFor(true)
   }
+
+  function closeModalFor() {
+    setIsFor(false)
+  }
+
+  function deletePost(id) {
+    api.delete(`produto/${id}`)
+    setPosts(produtos.filter(data => data.id !== id))
+  }
+
 
   return (
     <div className="fundo">
       <h1>Sitema de estoque</h1>
       <button onClick={openModal}>Cadastra Produto</button>
       <button onClick={openModalFor}>Cadastra Fornecedor</button>
-      <Modal
-        isOpen={modalIsOpenFor}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-        style={customStyles}
-      >
-        <form onSubmit={r => submitFor(r)}>
-          <div className="modal">
-            Nome Fornecedor:
-            <input
-              onChange={r => handlefor(r)}
-              value={data1.nomeDoFornecedor}
-              type="text"
-              id="nomeDoFornecedor"
-            />
-          </div>
-        </form>
-        <button onClick={closeModalFor}>close</button>
-        <button type="submitFor">Salvar</button>
-      </Modal>
+      
+
+      <ModalForm  customStyles={customStyles}  data={data}  closeModal={closeModal} closeModalFor={closeModalFor} openModalFor={openModalFor}/>
 
       <Modal
         isOpen={modalIsOpen}
@@ -153,7 +131,7 @@ export default function Home() {
               <input
                 onChange={e => handle(e)}
                 value={data.nomeProduto}
-                data-testid ="nomeproduto"
+                inputProps={{ 'data-testid': 'nomeproduto' }}
                 type="nomeProduto"
                 id="nomeProduto"
               />
@@ -178,7 +156,7 @@ export default function Home() {
                 onChange={e => handle(e)}
                 value={data.quantidade}
                 type="text"
-                id="nomeProduto"
+                id="quantidade"
               />
               Fornecedor:
               <input
@@ -192,7 +170,7 @@ export default function Home() {
                 onChange={e => handle(e)}
                 value={data.tipoDeProduto}
                 type="text"
-                id="nomeProduto"
+                id="tipoDeProduto"
               />
             </div>
             <div className="buttonModal">
@@ -207,8 +185,8 @@ export default function Home() {
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell align="right">id</TableCell>
-                <TableCell>Produto</TableCell>
+                <TableCell   >id</TableCell>
+                <TableCell align="right" >Produto</TableCell>
                 <TableCell align="right">quantidade</TableCell>
                 <TableCell align="right">Preço de Venda</TableCell>
                 <TableCell align="right">Preço de Compra</TableCell>
@@ -244,6 +222,7 @@ export default function Home() {
                       <Button variant="contained">Editar</Button>
                     </Link>
                   </TableCell>
+                  <TableCell  align="right"><Button onClick={() => deletePost(produto.id)}>Deletar</Button></TableCell>
                 </TableRow>
               ))}
             </TableBody>
